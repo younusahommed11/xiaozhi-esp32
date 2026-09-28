@@ -21,11 +21,31 @@ private:
     lv_obj_t* emotion_label_ = nullptr;
     lv_obj_t* chat_message_label_ = nullptr;
 
+    // ফেস অ্যানিমেশনের জন্য নতুন অবজেক্ট ও ভেরিয়েবল
+    lv_obj_t* face_container_ = nullptr;
+    lv_obj_t* left_eye_ = nullptr;
+    lv_obj_t* right_eye_ = nullptr;
+    lv_obj_t* mouth_ = nullptr;
+
+    int blink_phase_ = 0;
+    int idle_move_offset_x_ = 0;
+    int idle_move_offset_y_ = 0;
+    uint32_t speak_last_update_ = 0;
+    int speak_mouth_target_ = 4;
+    int speak_mouth_current_ = 4;
+    int eye_size = 22;
+
     virtual bool Lock(int timeout_ms = 0) override;
     virtual void Unlock() override;
 
     void SetupUI_128x64();
     void SetupUI_128x32();
+
+    // অ্যানিমেশন বিহেভিয়ার ফাংশন ঘোষণা
+    void UpdateFace();
+    void IdleBehavior(int base_eye_height);
+    void ListeningBehavior(int base_eye_height);
+    void SpeakingBehavior(int eye_height);
 
 public:
     OledDisplay(esp_lcd_panel_io_handle_t panel_io, esp_lcd_panel_handle_t panel, int width,
